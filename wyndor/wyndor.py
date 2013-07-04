@@ -54,13 +54,14 @@ model.obj = Objective(expr = sum(ProfitRate[i] * model.WeeklyProd[i] for i in Pr
                       sense=maximize)
                       
 def CapacityRule(model, p):
-    """User defined capacity rule
-    
+    """User defined capacity rule - 
     Accepts a pyomo Concrete Model as the first positional argument,
     and a plant index as a second positional argument
-    
     """
-    return 
+    return sum(HoursPerUnit[i,p] * model.WeeklyProd[i] for i in Products) <= HoursAvailable[p]
+    
+# Constraint
+model.Capacity = Constraint(Plants, rule=CapacityRule)
     
 
 #This is an optional code path that allows the script to be run outside of
