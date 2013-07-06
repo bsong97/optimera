@@ -1,9 +1,9 @@
 # Product mix problem
 # Hansen produces orange, apple, grape and mixed fruit juice
 # Hansen has four plants located at California, Washington, Oregon and British Columbia
-# Each of four plants with different with available hours that can produce different type of juice
+# Each of four plants has different available hours that can produce different type of juice
 # 
-# The aim is to maximise the profit in the limited hours of production available 
+# The aim is to maximise the profit with the limited hours of production available 
 
 # At high level, pyomo consists of:
     # Variables that are calculated during the optimization
@@ -90,3 +90,8 @@ if __name__ == '__main__':
     results = opt.solve(instance)
     #sends results to stdout
     results.write()
+    
+
+# Expected result:
+# Maximum profit = 2352.94
+#
