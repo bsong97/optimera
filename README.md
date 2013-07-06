@@ -10,3 +10,8 @@ wyndor
 A simple linear optimization problem that optimizes the profit from a plant which produces windows and doors. It requires the Coopr package which contains the Pyomo (Python Optimization Modeling Object) library. The Coopr package calls the GLPK solver to solve the LP problem.
 
 
+hansen
+------
+A clone of wyndor that optimizes the profit from a fruit juice plant that produces different types of fruit juices. 
+
+

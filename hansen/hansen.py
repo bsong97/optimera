@@ -1,6 +1,7 @@
 # Product mix problem
-# Wyndor produces door and windows
-# Each of three plants with different with available hours that can produce doors and windows
+# Hansen produces orange, apple, grape and mixed fruit juice
+# Hansen has four plants located at California, Washington, Oregon and British Columbia
+# Each of four plants with different with available hours that can produce different type of juice
 # 
 # The aim is to maximise the profit available in the limited hours of production
 
@@ -9,7 +10,7 @@
     # Objectives (function) that take data and variables, and is either maximized or minimzed
     # Constraints that limit values of 
  
-"""Wyndor model from Hillier and Hillier *Introduction to Management Science*
+"""This is a fictional case that models the production of fruit juices by Hansen
 
 It has three main sections:
 - model
@@ -20,7 +21,7 @@ To run this you need pyomo and the glpk solver installed, and need to be
 inside of the virtual environment.
 When these dependencies are installed you can solve this way (glpk is default):
     
-    pyomo wyndor.py
+    pyomo hansen.py
 
 """
 
@@ -33,19 +34,29 @@ from coopr.pyomo import (ConcreteModel,
                          Constraint)
 
 # Plant data
-Products = ['Doors', 'Windows']
-ProfitRate = {'Doors':300, 'Windows':500}
-Plants = ['Door Fab', 'Window Fab', 'Assembly']
-HoursAvailable = {'Door Fab':4, 'Window Fab':12, 'Assembly':18}
-HoursPerUnit = {('Doors', 'Door Fab'):1,
-                ('Windows', 'Window Fab'):2,
-                ('Doors', 'Assembly'):3,
-                ('Windows', 'Assembly'):2,
-                ('Windows', 'Door Fab'):0,
-                ('Doors', 'Window Fab'):0}
+Products = ['Orange', 'Apple', 'Grape', 'Mixed']
+ProfitRate = {'Orange':3, 'Apple':2, 'Grape':1, 'Mixed':5}
+Plants = ['California', 'Oregon', 'BritishColumbia', 'Washington']
+HoursAvailable = {'California':4, 'Oregon':12, 'Washington':18, 'BritishColumbia':9}
+HoursPerUnit = {('Orange', 'California'):0.0051,
+                ('Orange', 'Oregon'):0.0048,
+                ('Orange', 'Washington'):0.0047,
+                ('Orange', 'BritishColumbia'):0,
+                ('Apple', 'California'):0.0063,
+                ('Apple', 'Oregon'):0.0061,
+                ('Apple', 'Washington'):0.0059,
+                ('Apple', 'BritishColumbia'):0.0063,
+                ('Grape', 'California'):0.0088,
+                ('Grape', 'Oregon'):0.0087,
+                ('Grape', 'Washington'):0.,
+                ('Grape', 'BritishColumbia'):0.,
+                ('Mixed', 'California'):0.012,
+                ('Mixed', 'Oregon'):0.0123,
+                ('Mixed', 'Washington'):0.,
+                ('Mixed', 'BritishColumbia'):0.,}
                 
 # Concrete Model
-model = ConcreteModel() # instantiates the data of the problem, such a  s hours available from the plant
+model = ConcreteModel() # instantiates the data of the problem, such as hours available from the plant
 # Decision variables
 model.WeeklyProd = Var(Products, within=NonNegativeReals)
 
@@ -55,9 +66,8 @@ model.obj = Objective(expr = sum(ProfitRate[i] * model.WeeklyProd[i] for i in Pr
                       
 def CapacityRule(model, p):
     """User defined capacity rule - 
-    Accepts a pyomo Concrete Model as the first positional argument,
-    and a plant index as a second positional argument
-    """
+    Accepts a pyomo ConcreteModel as the first positional argument,
+    and a plant index as a second positional argument"""
     return sum(HoursPerUnit[i,p] * model.WeeklyProd[i] for i in Products) <= HoursAvailable[p]
     
 # Constraint
