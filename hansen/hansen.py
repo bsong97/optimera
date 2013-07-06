@@ -3,7 +3,7 @@
 # Hansen has four plants located at California, Washington, Oregon and British Columbia
 # Each of four plants with different with available hours that can produce different type of juice
 # 
-# The aim is to maximise the profit available in the limited hours of production
+# The aim is to maximise the profit in the limited hours of production available 
 
 # At high level, pyomo consists of:
     # Variables that are calculated during the optimization
@@ -22,6 +22,7 @@ inside of the virtual environment.
 When these dependencies are installed you can solve this way (glpk is default):
     
     pyomo hansen.py
+    python hansen.py
 
 """
 
@@ -54,28 +55,32 @@ HoursPerUnit = {('Orange', 'California'):0.0051,
                 ('Mixed', 'Oregon'):0.0123,
                 ('Mixed', 'Washington'):0.,
                 ('Mixed', 'BritishColumbia'):0.,}
+
                 
-# Concrete Model
-model = ConcreteModel() # instantiates the data of the problem, such as hours available from the plant
+# Concrete Model instantiates the data of the problem, such as hours available from the plant
+model = ConcreteModel()
 # Decision variables
 model.WeeklyProd = Var(Products, within=NonNegativeReals)
 
-# Objective
+# Objective - to maximize profit
+# meaning: for each product, calculate the profit rate * production, sum all these at the end
 model.obj = Objective(expr = sum(ProfitRate[i] * model.WeeklyProd[i] for i in Products), 
                       sense=maximize)
-                      
+
+# Constraint - uses a Capacity Rule function
+# meaning: for each product, the HoursPerUnit for each product in each plant 
+# should not exceed the hours available for all plant                 
 def CapacityRule(model, p):
     """User defined capacity rule - 
     Accepts a pyomo ConcreteModel as the first positional argument,
     and a plant index as a second positional argument"""
     return sum(HoursPerUnit[i,p] * model.WeeklyProd[i] for i in Products) <= HoursAvailable[p]
     
-# Constraint
 model.Capacity = Constraint(Plants, rule=CapacityRule)
     
 
 #This is an optional code path that allows the script to be run outside of
-#pyomo command-line.  For example:  python wyndor.py
+#pyomo command-line.  For example:  python hansen.py
 if __name__ == '__main__':
    
     #This replicates what the pyomo command-line tools does
