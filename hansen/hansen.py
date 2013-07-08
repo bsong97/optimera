@@ -24,6 +24,10 @@ When these dependencies are installed you can solve this way (glpk is default):
     pyomo hansen.py
     python hansen.py
 
+To display the what ratio of products need to produce to maximize the profit:
+
+    cat results.yml
+    
 """
 
 # Import
@@ -38,8 +42,8 @@ from coopr.pyomo import (ConcreteModel,
 Products = ['Orange', 'Apple', 'Grape', 'Mixed']
 ProfitRate = {'Orange':3, 'Apple':2, 'Grape':1, 'Mixed':5}
 Plants = ['California', 'Oregon', 'BritishColumbia', 'Washington']
-HoursAvailable = {'California':4, 'Oregon':12, 'Washington':18, 'BritishColumbia':9}
-HoursPerUnit = {('Orange', 'California'):0.0051,
+HoursAvailable = {'California':4, 'Oregon':12, 'Washington':18, 'BritishColumbia':9}    # free hours per week
+HoursPerUnit = {('Orange', 'California'):0.0051,    # 1/0.0051 is 196 units per hour
                 ('Orange', 'Oregon'):0.0048,
                 ('Orange', 'Washington'):0.0047,
                 ('Orange', 'BritishColumbia'):0,
@@ -63,19 +67,21 @@ model = ConcreteModel()
 model.WeeklyProd = Var(Products, within=NonNegativeReals)
 
 # Objective - to maximize profit
-# meaning: for each product, calculate the profit rate * production, sum all these at the end
+# meaning: for each product, calculate the profit rate * weekly production rate, sum all these at the end
+# pick the combination with the maximum profit
 model.obj = Objective(expr = sum(ProfitRate[i] * model.WeeklyProd[i] for i in Products), 
                       sense=maximize)
 
 # Constraint - uses a Capacity Rule function
-# meaning: for each product, the HoursPerUnit for each product in each plant 
-# should not exceed the hours available for all plant                 
+# meaning: for each product, the HoursPerUnit for each product
+# should not exceed the hours available for each plant                 
 def CapacityRule(model, p):
     """User defined capacity rule - 
     Accepts a pyomo ConcreteModel as the first positional argument,
     and a plant index as a second positional argument"""
     return sum(HoursPerUnit[i,p] * model.WeeklyProd[i] for i in Products) <= HoursAvailable[p]
-    
+
+# Constraint for each plant    
 model.Capacity = Constraint(Plants, rule=CapacityRule)
     
 
