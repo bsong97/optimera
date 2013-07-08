@@ -14,7 +14,7 @@
 # We denote the area of planted with barley, wheat, rice and maize as x1, x2, x3, x4
 # The revenue can be maximized by choosing optimal values for x1, x2, x3 and x4.
  
-# Objective: Maximize revenue
+# Objective: Maximize revenue for the corresponding season
  # S1*x1 + S2*x2 + S3*x3 + S4*x4
  
 # Constraints:
@@ -54,17 +54,17 @@ from coopr.pyomo import (ConcreteModel,
 # Information provided
 Area = 100                                                      # Farmer has 100km2
 Plants = ['Barley', 'Wheat', 'Rice', 'Maize']
-SellingPrice = {'Barley':300, 'Wheat':200, 'Rice':250, 'Maize':500}     # selling price per km2
+SellingPrice = {'Barley':300, 'Wheat':200, 'Rice':250, 'Maize':380}     # selling price per km2
 Resource = ['fertilizer', 'pesticide']                          # fertilizer and pesticide are constraints
 Resource_available = {'fertilizer':1260, 'pesticide':780}       # amount of fertilizer and pesticide available
-Resource_required = {('barley', 'fertilizer'):4,
-                     ('wheat', 'fertilizer'):12,
-                    ('rice', 'fertilizer'):18,
-                    ('maize', 'fertilizer'):9,
-                    ('barley', 'pesticide'):5,
-                    ('wheat', 'pesticide'):4,
-                    ('rice', 'pesticide'):3,
-                    ('maize', 'pesticide'):6,}
+Resource_required = {('Barley', 'fertilizer'):4,
+                     ('Wheat', 'fertilizer'):12,
+                    ('Rice', 'fertilizer'):18,
+                    ('Maize', 'fertilizer'):19,
+                    ('Barley', 'pesticide'):5,
+                    ('Wheat', 'pesticide'):4,
+                    ('Rice', 'pesticide'):3,
+                    ('Maize', 'pesticide'):6,}
 
                 
 # Concrete Model instantiates the data of the problem
@@ -78,15 +78,14 @@ model.obj = Objective(expr = sum(SellingPrice[i] * model.SeasonProd[i] for i in 
                       sense=maximize)
 
 # Constraint - uses a Capacity Rule function
-# meaning: for each product, the HoursPerUnit for each product in each plant 
-# should not exceed the hours available for all plant                 
+# meaning: for each plant, the resource used should not exceed the total resource available
 def CapacityRule(model, p):
     """User defined capacity rule - 
     Accepts a pyomo ConcreteModel as the first positional argument,
     and a plant index as a second positional argument"""
-    return sum(HoursPerUnit[i,p] * model.WeeklyProd[i] for i in Products) <= HoursAvailable[p]
+    return sum(Resource_required[i,p] * model.SeasonProd[i] for i in Plants) <= Resource_available[p]
     
-model.Capacity = Constraint(Plants, rule=CapacityRule)
+model.Capacity = Constraint(Resource, rule=CapacityRule)
     
 
 #This is an optional code path that allows the script to be run outside of
@@ -100,3 +99,10 @@ if __name__ == '__main__':
     results = opt.solve(instance)
     #sends results to stdout
     results.write()
+
+# Results obtained:
+# Revenue: 49653
+# What to plant:
+    # Rice: 40.77 km2
+    # Barley: 131.54 km2
+# fertilizer and pesticide are fully utilized

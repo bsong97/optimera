@@ -31,4 +31,4 @@ Let S4 be selling price of maize per km2
 
 We denote the area of planted with barley, wheat, rice and maize as x1, x2, x3, x4
 
-The profit can be maximized by choosing optimal values for x1, x2, x3 and x4.
+The revenue can be maximized by choosing optimal values for x1, x2, x3 and x4.
