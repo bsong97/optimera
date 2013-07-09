@@ -64,13 +64,13 @@ Resource_required = {('Barley', 'fertilizer'):4,
                     ('Barley', 'pesticide'):5,
                     ('Wheat', 'pesticide'):4,
                     ('Rice', 'pesticide'):3,
-                    ('Maize', 'pesticide'):6,}
+                    ('Maize', 'pesticide'):6}
 
                 
 # Concrete Model instantiates the data of the problem
 model = ConcreteModel()
 
-# Decision variables - varying the combination of plant types
+# Decision variables - varying the combination of plant area
 model.SeasonProd = Var(Plants, within=NonNegativeReals)
 
 # Objective - to maximize profit
@@ -92,7 +92,7 @@ def LandAreaRule(model):
     return sum(model.SeasonProd[i] for i in Plants) <= Area
 
 model.Capacity = Constraint(Resource, rule=CapacityRule)
-model.LandArea = Constraint(Area, rule=LandAreaRule)
+model.LandArea = Constraint(rule=LandAreaRule)
 
 #This is an optional code path that allows the script to be run outside of
 #pyomo command-line.  For example:  python hansen.py
@@ -114,12 +114,17 @@ if __name__ == '__main__':
 # What to plant:
     # Rice: 40.77 km2
     # Barley: 131.54 km2
-# fertilizer and pesticide are fully utilized
+# Resource utilized:
+    # Fertilizer: 1260
+    # Pesticide: 780
 
 # When maximum area is set to 100km2
-# Revenue:as
+# Revenue: 34586.66
 # What to plant:
-    # as
-    # as
-# 
+    # Maize: 57.33 km2
+    # Barley: 42.66 km2
+# Resource utilized:
+    # Fertilizer: 1260
+    # Pesticide: 557.33
+# Area utilized: 100 km2
     
