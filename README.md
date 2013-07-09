@@ -3,11 +3,13 @@ Optimera
 
 A repository that stores and shows some of the optimization problems
 
+It requires the Coopr package (not included) which contains the Pyomo (Python Optimization Modeling Object) library. The Coopr package calls the GLPK solver to solve the LP problem.
+
 Currently with the following problem:
 
 wyndor
 ------
-A simple linear optimization problem that optimizes the profit from a plant which produces windows and doors. It requires the Coopr package which contains the Pyomo (Python Optimization Modeling Object) library. The Coopr package calls the GLPK solver to solve the LP problem.
+A simple LP problem that optimizes the profit from a plant which produces windows and doors. 
 
 
 hansen
@@ -17,7 +19,7 @@ A clone of wyndor that optimizes the profit from a fruit juice plant that produc
 
 farming
 -------
-A farmer has a piece of land to be planted of Z km2 with barley, wheat, rice, maize, or their different combinations. The farmer has a limited amount of fertilizer, F kilograms, and insecticide, P kilograms.
+LP problem: A farmer has a piece of land to be planted of Z km2 with barley, wheat, rice, maize, or their different combinations. The farmer has a limited amount of fertilizer, F kilograms, and insecticide, P kilograms.
 
 Every km2 of barley requires F1 kg of fertilizer, P1 kg of insecticide
 Every km2 of wheat requires F2 kg of fertilizer, P2 kg of insecticide
