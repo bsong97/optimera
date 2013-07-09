@@ -53,7 +53,7 @@ from coopr.pyomo import (ConcreteModel,
 
 # Information provided
 Area = 100                                                      # Farmer has 100km2
-Plants = ['Barley', 'Wheat', 'Rice', 'Maize']
+Plants = ['Barley', 'Wheat', 'Rice', 'Maize']                   # Plants' area
 SellingPrice = {'Barley':300, 'Wheat':200, 'Rice':250, 'Maize':380}     # selling price per km2
 Resource = ['fertilizer', 'pesticide']                          # fertilizer and pesticide are constraints
 Resource_available = {'fertilizer':1260, 'pesticide':780}       # amount of fertilizer and pesticide available
@@ -69,6 +69,7 @@ Resource_required = {('Barley', 'fertilizer'):4,
                 
 # Concrete Model instantiates the data of the problem
 model = ConcreteModel()
+
 # Decision variables - varying the combination of plant types
 model.SeasonProd = Var(Plants, within=NonNegativeReals)
 
@@ -77,16 +78,21 @@ model.SeasonProd = Var(Plants, within=NonNegativeReals)
 model.obj = Objective(expr = sum(SellingPrice[i] * model.SeasonProd[i] for i in Plants), 
                       sense=maximize)
 
-# Constraint - uses a Capacity Rule function
+# Constraint - uses a Capacity Rule and Land Area function
 # meaning: for each plant, the resource used should not exceed the total resource available
 def CapacityRule(model, p):
     """User defined capacity rule - 
     Accepts a pyomo ConcreteModel as the first positional argument,
     and a plant index as a second positional argument"""
     return sum(Resource_required[i,p] * model.SeasonProd[i] for i in Plants) <= Resource_available[p]
-    
+
+# meaning: sum of all planting area should not exceed the total area owned by farmer
+def LandAreaRule(model):
+    """User-defined maximum area"""
+    return sum(model.SeasonProd[i] for i in Plants) <= Area
+
 model.Capacity = Constraint(Resource, rule=CapacityRule)
-    
+model.LandArea = Constraint(Area, rule=LandAreaRule)
 
 #This is an optional code path that allows the script to be run outside of
 #pyomo command-line.  For example:  python hansen.py
@@ -100,9 +106,20 @@ if __name__ == '__main__':
     #sends results to stdout
     results.write()
 
+
 # Results obtained:
+
+# When maximum area is not set:
 # Revenue: 49653
 # What to plant:
     # Rice: 40.77 km2
     # Barley: 131.54 km2
 # fertilizer and pesticide are fully utilized
+
+# When maximum area is set to 100km2
+# Revenue:as
+# What to plant:
+    # as
+    # as
+# 
+    
