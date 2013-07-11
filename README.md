@@ -3,13 +3,15 @@ Optimera
 
 A repository that stores and shows some of the optimization problems
 
-It requires the Coopr package (not included) which contains the Pyomo (Python Optimization Modeling Object) library. The Coopr package calls the GLPK solver to solve the LP problem.
+It requires the Coopr package (not included) which contains the Pyomo (Python Optimization Modeling Object) library. The Coopr package calls the GLPK solver to solve LP and NLP problems.
 
-Currently with the following problem:
+Currently the repository comprises the following problems:
 
 wyndor
 ------
-A simple LP problem that optimizes the profit from a plant which produces windows and doors. 
+Wyndor sells windows and doors. It has three factories: Door fab, Window fab and Assembly. Each factory has some free hours available, and each of them can only produce certain products at different rate of productivity.  
+
+This is a simple LP problem that maximize the profit from a limited amount of free hours available by each factory. 
 
 
 hansen
@@ -34,3 +36,8 @@ Let S4 be selling price of maize per km2
 We denote the area of planted with barley, wheat, rice and maize as x1, x2, x3, x4
 
 The revenue can be maximized by choosing optimal values for x1, x2, x3 and x4.
+
+
+rosenbrock
+----------
+Non-LP problem. Currently under construction.
