@@ -40,4 +40,4 @@ The revenue can be maximized by choosing optimal values for x1, x2, x3 and x4.
 
 rosenbrock
 ----------
-Non-LP problem. Currently under construction.
+Non-LP problem. Minimizes the classic non-linear rosenbrock function.
