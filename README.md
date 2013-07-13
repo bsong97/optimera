@@ -41,3 +41,16 @@ The revenue can be maximized by choosing optimal values for x1, x2, x3 and x4.
 rosenbrock
 ----------
 Non-LP problem. Minimizes the classic non-linear rosenbrock function.
+
+
+continuous stirred tank reactor
+-------------------------------
+Non-LP problem. It considers the steady-state Van de Vusse reaction in cstr:
+
+	A -> B -> C
+	2A -> D
+
+where A is the reactant, B is the desired product while B and D are undesired products.
+
+The objective is to solve for optimal reactor volume that can produce the maximum outlet of concentration for B. 
+
