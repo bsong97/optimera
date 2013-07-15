@@ -7,11 +7,12 @@ It requires the Coopr package (not included) which contains the Pyomo (Python Op
 
 Currently the repository comprises the following problems:
 
+
 wyndor
 ------
 Wyndor sells windows and doors. It has three factories: Door fab, Window fab and Assembly. Each factory has some free hours available, and each of them can only produce certain products at different rate of productivity.  
 
-This is a simple LP problem that maximize the profit from a limited amount of free hours available by each factory. 
+This is a simple LP problem that maximize the profit from producing the goods with a limited amount of free hours available by each factory. 
 
 
 hansen
@@ -50,7 +51,7 @@ Non-LP problem. It considers the steady-state Van de Vusse reaction in cstr:
 	A -> B -> C
 	2A -> D
 
-where A is the reactant, B is the desired product while B and D are undesired products.
+where A is the reactant, B is the desired product while C and D are undesired products.
 
 The objective is to solve for optimal reactor volume that can produce the maximum outlet of concentration for B. 
 
