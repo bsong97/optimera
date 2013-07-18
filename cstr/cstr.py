@@ -26,12 +26,12 @@ from coopr.pyomo import *
 # Instantiate model
 model = ConcreteModel()
 
-# Decision variable - the space velocity SV = F/V
-model.sv = Var(initialize=1.0, within=PositiveReals)
-model.ca = Var(initialize=5000.0, within=PositiveReals)
-model.cb = Var(initialize=2000.0, within=PositiveReals)
-model.cc = Var(initialize=2000.0, within=PositiveReals)
-model.cd = Var(initialize=1000.0, within=PositiveReals)
+# Decision variable 
+model.sv = Var(initialize=1.0, within=PositiveReals)    # space velocity SV = F/V
+model.ca = Var(initialize=5000.0, within=PositiveReals) # concentration A
+model.cb = Var(initialize=2000.0, within=PositiveReals) # concentration B
+model.cc = Var(initialize=2000.0, within=PositiveReals) # concentration C
+model.cd = Var(initialize=1000.0, within=PositiveReals) # concentration D
 
 # Objective - maximize concentration of B
 model.obj = Objective(expr=model.cb, sense=maximize)
