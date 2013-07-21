@@ -2,7 +2,7 @@
 # Wyndor produces door and windows
 # Each of three plants with different with available hours that can produce doors and windows
 # 
-# The aim is to maximise the profit available in the limited hours of production
+# The aim is to maximise the profit in the limited hours of production available
 
 # At high level, pyomo consists of:
     # Variables that are calculated during the optimization
@@ -45,7 +45,7 @@ HoursPerUnit = {('Doors', 'Door Fab'):1,
                 ('Doors', 'Window Fab'):0}
                 
 # Concrete Model
-model = ConcreteModel() # instantiates the data of the problem, such a  s hours available from the plant
+model = ConcreteModel() # instantiates the data of the problem, such as hours available from the plant
 # Decision variables
 model.WeeklyProd = Var(Products, within=NonNegativeReals)
 
@@ -75,3 +75,10 @@ if __name__ == '__main__':
     results = opt.solve(instance)
     #sends results to stdout
     results.write()
+
+
+# Expected result:
+# Maximum profit = 3600
+# Weekly Production of windows: 6
+# Weekly production of doors: 2
+#

@@ -36,13 +36,15 @@ model.y = Var()
 def rosenbrock(model):
     return (1.0-model.x)**2 + 100.0*(model.y - model.x**2)**2
 
-model.obj = Objective(rule=rosenbrock, sense=minimize)
+#model.objective = Objective(rule=rosenbrock, sense=minimize)
+model.objective = Objective(expr=(1.0-model.x)**2 + 100.0*(model.y - model.x**2)**2, sense=minimize)
+
 
 # Constraint - there is no constraint               
 
 
 #This is an optional code path that allows the script to be run outside of
-#pyomo command-line.  For example:  python hansen.py
+#pyomo command-line.  For example:  python rosenbrock.py
 if __name__ == '__main__':
    
     #This replicates what the pyomo command-line tools does
@@ -52,7 +54,8 @@ if __name__ == '__main__':
     results = opt.solve(instance)
     #sends results to stdout
     results.write()
-    
+
+
 
 # Expected result:
 # x=1, y=1

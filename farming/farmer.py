@@ -95,7 +95,7 @@ model.Capacity = Constraint(Resource, rule=CapacityRule)
 model.LandArea = Constraint(rule=LandAreaRule)
 
 #This is an optional code path that allows the script to be run outside of
-#pyomo command-line.  For example:  python hansen.py
+#pyomo command-line.  For example:  python farmer.py
 if __name__ == '__main__':
    
     #This replicates what the pyomo command-line tools does
