@@ -55,3 +55,9 @@ where A is the reactant, B is the desired product while C and D are undesired pr
 
 The objective is to solve for optimal reactor volume that can produce the maximum outlet of concentration for B. 
 
+
+tsp
+---
+Traveling Salesman Problem that uses greedy algorithm to find the optimal path given the information about the distance between the cities.
+
+
